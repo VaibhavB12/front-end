@@ -63,12 +63,15 @@
           let message = document.getElementById("message");
 
           try {
-            let response = await fetch("https://your-api-url.com/login", {
-              // Replace with your API
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email, password }),
-            });
+            let response = await fetch(
+              "http://localhost:5000/api/v1/auth/login",
+              {
+                // Replace with your API
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+              }
+            );
 
             let result = await response.json();
 
