@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+      .container {
+        max-width: 300px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      input {
+        width: 100%;
+        padding: 8px;
+        margin: 5px 0;
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        background: green;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      p {
+        color: red;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Login</h2>
+      <form id="loginForm">
+        <input type="email" id="email" placeholder="Email" required /><br />
+        <input
+          type="password"
+          id="password"
+          placeholder="Password"
+          required
+        /><br />
+        <button type="submit">Login</button>
+      </form>
+      <p id="message"></p>
+      <p>New user? <a href="register.html">Register here</a></p>
+    </div>
+
+    <script>
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          let email = document.getElementById("email").value;
+          let password = document.getElementById("password").value;
+          let message = document.getElementById("message");
+
+          try {
+            let response = await fetch("https://your-api-url.com/login", {
+              // Replace with your API
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, password }),
+            });
+
+            let result = await response.json();
+
+            if (response.ok) {
+              message.style.color = "green";
+              message.textContent = "Login successful! Redirecting...";
+              setTimeout(() => {
+                window.location.href = "dashboard.html"; // Redirect to Dashboard
+              }, 2000);
+            } else {
+              message.style.color = "red";
+              message.textContent = result.message || "Invalid credentials!";
+            }
+          } catch (error) {
+            message.style.color = "red";
+            message.textContent = "Something went wrong!";
+          }
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+      .container {
+        max-width: 300px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      input {
+        width: 100%;
+        padding: 8px;
+        margin: 5px 0;
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        background: blue;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      p {
+        color: red;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Register</h2>
+      <form id="registerForm">
+        <input type="text" id="name" placeholder="Name" required /><br />
+        <input type="email" id="email" placeholder="Email" required /><br />
+        <input
+          type="password"
+          id="password"
+          placeholder="Password"
+          required
+        /><br />
+        <button type="submit">Register</button>
+      </form>
+      <p id="message"></p>
+      <p>Already registered? <a href="login.html">Login here</a></p>
+    </div>
+
+    <script>
+      document
+        .getElementById("registerForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          let name = document.getElementById("name").value;
+          let email = document.getElementById("email").value;
+          let password = document.getElementById("password").value;
+          let message = document.getElementById("message");
+
+          try {
+            let response = await fetch(
+              "http://localhost:5000/api/v1/auth/register",
+              {
+                // Replace with your API
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, email, password }),
+              }
+            );
+
+            let result = await response.json();
+
+            if (response.ok) {
+              message.style.color = "green";
+              message.textContent =
+                "Registration successful! Redirecting to login...";
+              setTimeout(() => {
+                window.location.href = "login.html"; // Redirect to Login Page
+              }, 2000);
+            } else {
+              message.style.color = "red";
+              message.textContent = result.message || "Registration failed!";
+            }
+          } catch (error) {
+            message.style.color = "red";
+            message.textContent = "Something went wrong!";
+          }
+        });
+    </script>
+  </body>
+</html>
